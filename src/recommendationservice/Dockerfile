@@ -14,7 +14,7 @@
 
 FROM python:2.7-slim
 COPY . .
-RUN apt-get -qy install g++ && \
+RUN apt-get update -qy && apt-get -qy install --no-install-recommends g++ gcc && \
 	rm -rf /var/lib/apt/lists/*
 # show python logs as they occur
 ENV PYTHONUNBUFFERED=0

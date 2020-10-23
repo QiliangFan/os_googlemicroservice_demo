@@ -16,7 +16,7 @@ FROM python:3.7-slim as base
 
 FROM base as builder
 
-RUN  apt-get install -y --no-install-recommends g++ \
+RUN  apt-get update -qy && apt-get install -y --no-install-recommends g++ gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # get packages

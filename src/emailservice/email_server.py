@@ -35,7 +35,7 @@ from opencensus.trace.ext.grpc import server_interceptor
 from opencensus.common.transports.async_ import AsyncTransport
 from opencensus.trace.samplers import always_on
 
-# import googleclouddebugger
+import googleclouddebugger
 import googlecloudprofiler
 
 from logger import getJSONLogger
