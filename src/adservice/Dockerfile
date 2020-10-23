@@ -26,19 +26,14 @@ RUN chmod +x gradlew
 RUN ./gradlew installDist
 
 FROM openjdk:8-slim
-
+COPY . .
 # Download Stackdriver Profiler Java agent
-RUN apt-get -y update && apt-get install -qqy \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /opt/cprof && \
-    wget -q -O- https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent.tar.gz \
-    | tar xzv -C /opt/cprof && \
+    tar -xzvf profiler_java_agent.tar.gz -C /opt/cprof && \
     rm -rf profiler_java_agent.tar.gz
 
-RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
-    chmod +x /bin/grpc_health_probe
+RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && cp grpc_health_probe-linux-amd64 /bin/grpc_health_probe &&  chmod +x /bin/grpc_health_probe
+
 
 WORKDIR /app
 COPY --from=builder /app .

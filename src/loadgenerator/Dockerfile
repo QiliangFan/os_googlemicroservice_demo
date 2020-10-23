@@ -12,25 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.6-slim as base
+FROM python:3.8-slim as base
 
 FROM base as builder
-RUN whereis python
-RUN which python
-RUN apt-get -qq update \
-    && apt-get install -y --no-install-recommends \
-        g++
+
+RUN apt-get install -y --no-install-recommends g++
 
 COPY requirements.txt .
 
-RUN pip install --prefix="/install" -r requirements.txt
+RUN pip install -i https://pypi.doubanio.com/simple/ --prefix="/install" -r requirements.txt
 
 FROM base
 COPY --from=builder /install /usr/local
 
 COPY . .
 RUN chmod +x ./loadgen.sh
-RUN apt-get -qq update \
-    && apt-get install -y --no-install-recommends \
-        curl
+RUN apt-get install -y --no-install-recommends curl
 ENTRYPOINT ./loadgen.sh
