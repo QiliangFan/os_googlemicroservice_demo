@@ -16,7 +16,10 @@ FROM python:3.8-slim as base
 
 FROM base as builder
 
-RUN apt-get install -y --no-install-recommends g++
+
+RUN apt-get update -qy &&apt-get install -y g++
+RUN g++ -v
+
 
 COPY requirements.txt .
 
@@ -27,5 +30,5 @@ COPY --from=builder /install /usr/local
 
 COPY . .
 RUN chmod +x ./loadgen.sh
-RUN apt-get install -y --no-install-recommends curl
+RUN apt update -qy && apt install -y --no-install-recommends curl
 ENTRYPOINT ./loadgen.sh
